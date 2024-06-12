@@ -23,11 +23,11 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>winforms;helpers;invoke;validation</PackageTags>
     <PackageReleaseNotes>
-      Added form,control and listview invoke helpers.
+      Added form, control and listview invoke helpers.
     </PackageReleaseNotes>
-    <AssemblyVersion>1.0.3</AssemblyVersion>
-    <FileVersion>1.0.3</FileVersion>
-    <VersionPrefix>1.0.3</VersionPrefix>
+    <AssemblyVersion>1.0.4</AssemblyVersion>
+    <FileVersion>1.0.4</FileVersion>
+    <VersionPrefix>1.0.4</VersionPrefix>
     <EnableNETAnalyzers>False</EnableNETAnalyzers>
     <Description>Helpers for working with WinForms. Getting and setting values, simplifications for invoke, etc.</Description>
   </PropertyGroup>

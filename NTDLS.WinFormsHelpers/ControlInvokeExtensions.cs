@@ -10,7 +10,7 @@
         /// </summary>
         /// <param name="control"></param>
         /// <param name="enabled"></param>
-        public static void FormInvokeEnableControl(this Control control, bool enabled)
+        public static void InvokeEnableControl(this Control control, bool enabled)
         {
             if (control.InvokeRequired)
             {

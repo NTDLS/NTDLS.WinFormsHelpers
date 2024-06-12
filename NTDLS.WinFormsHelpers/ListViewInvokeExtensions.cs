@@ -10,11 +10,11 @@
         /// </summary>
         /// <param name="listView"></param>
         /// <param name="item"></param>
-        public static void FormInvokeDeleteListViewItem(this ListView listView, ListViewItem item)
+        public static void InvokeDeleteListViewItem(this ListView listView, ListViewItem item)
         {
             if (listView.InvokeRequired)
             {
-                listView.Invoke(new Action<ListViewItem>(listView.FormInvokeDeleteListViewItem), item);
+                listView.Invoke(new Action<ListViewItem>(listView.InvokeDeleteListViewItem), item);
             }
             else
             {
@@ -26,11 +26,11 @@
         /// Invokes the ListView to clear all items.
         /// </summary>
         /// <param name="listView"></param>
-        public static void FormInvokeClearListViewRows(this ListView listView)
+        public static void InvokeClearListViewRows(this ListView listView)
         {
             if (listView.InvokeRequired)
             {
-                listView.Invoke(new Action(listView.FormInvokeClearListViewRows));
+                listView.Invoke(new Action(listView.InvokeClearListViewRows));
             }
             else
             {
