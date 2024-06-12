@@ -8,7 +8,7 @@
         /// <summary>
         /// Gets an integer value from a windows textbox. Ensures that the value falls within the given ranges.
         /// </summary>
-        public static int GetAndValidate(this TextBox textBox, int minValue, int maxValue, string message)
+        public static int GetAndValidateNumeric(this TextBox textBox, int minValue, int maxValue, string message)
         {
             message = message.Replace("[min]", $"{minValue:n0}", StringComparison.InvariantCultureIgnoreCase);
             message = message.Replace("[max]", $"{maxValue:n0}", StringComparison.InvariantCultureIgnoreCase);
@@ -28,7 +28,7 @@
         /// <summary>
         /// Gets a double floating value from a windows textbox. Ensures that the value falls within the given ranges.
         /// </summary>
-        public static double GetAndValidate(this TextBox textBox, double minValue, double maxValue, string message)
+        public static double GetAndValidateNumeric(this TextBox textBox, double minValue, double maxValue, string message)
         {
             message = message.Replace("[min]", $"{minValue:n0}", StringComparison.InvariantCultureIgnoreCase);
             message = message.Replace("[max]", $"{maxValue:n0}", StringComparison.InvariantCultureIgnoreCase);
@@ -47,7 +47,7 @@
         /// <summary>
         /// Gets a float floating value from a windows textbox. Ensures that the value falls within the given ranges.
         /// </summary>
-        public static float GetAndValidate(this TextBox textBox, float minValue, float maxValue, string message)
+        public static float GetAndValidateNumeric(this TextBox textBox, float minValue, float maxValue, string message)
         {
             message = message.Replace("[min]", $"{minValue:n0}", StringComparison.InvariantCultureIgnoreCase);
             message = message.Replace("[max]", $"{maxValue:n0}", StringComparison.InvariantCultureIgnoreCase);
@@ -60,6 +60,39 @@
                 }
                 return value;
             }
+            throw new Exception(message);
+        }
+
+        /// <summary>
+        /// Gets a string value from a windows textbox. Ensures that the length falls within the given ranges.
+        /// </summary>
+        public static string GetAndValidateText(this TextBox textBox, int minValue, int maxValue, string message)
+        {
+            message = message.Replace("[min]", $"{minValue:n0}", StringComparison.InvariantCultureIgnoreCase);
+            message = message.Replace("[max]", $"{maxValue:n0}", StringComparison.InvariantCultureIgnoreCase);
+
+            int length = textBox.Text.Length;
+
+            if (length < minValue || length > maxValue)
+            {
+                throw new Exception(message);
+            }
+            return textBox.Text.Trim();
+
+            throw new Exception(message);
+        }
+
+        /// <summary>
+        /// Gets a string value from a windows textbox. Ensures that it contains a value.
+        /// </summary>
+        public static string GetAndValidateText(this TextBox textBox, string message)
+        {
+            if (string.IsNullOrWhiteSpace(textBox.Text.Trim()))
+            {
+                throw new Exception(message);
+            }
+            return textBox.Text.Trim();
+
             throw new Exception(message);
         }
     }

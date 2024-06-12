@@ -23,11 +23,11 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>winforms;helpers;invoke;validation</PackageTags>
     <PackageReleaseNotes>
-      Initial package creation.
+      Added text length validation.
     </PackageReleaseNotes>
-    <AssemblyVersion>1.0.0</AssemblyVersion>
-    <FileVersion>1.0.0</FileVersion>
-    <VersionPrefix>1.0.0</VersionPrefix>
+    <AssemblyVersion>1.0.2</AssemblyVersion>
+    <FileVersion>1.0.2</FileVersion>
+    <VersionPrefix>1.0.2</VersionPrefix>
     <EnableNETAnalyzers>False</EnableNETAnalyzers>
     <Description>Helpers for working with WinForms. Getting and setting values, simplifications for invoke, etc.</Description>
   </PropertyGroup>
