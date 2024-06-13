@@ -25,7 +25,7 @@
     <PackageReleaseNotes>
       Added non validation textbox getters.
     </PackageReleaseNotes>
-    <Version>2.1.5</Version>
+    <Version>1.0.5</Version>
     <EnableNETAnalyzers>False</EnableNETAnalyzers>
     <Description>Helpers for working with WinForms. Getting and setting values, simplifications for invoke, etc.</Description>
   </PropertyGroup>
