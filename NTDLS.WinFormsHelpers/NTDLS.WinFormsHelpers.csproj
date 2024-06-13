@@ -23,11 +23,9 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>winforms;helpers;invoke;validation</PackageTags>
     <PackageReleaseNotes>
-      Added form, control and listview invoke helpers.
+      Added non validation textbox getters.
     </PackageReleaseNotes>
-    <AssemblyVersion>1.0.4</AssemblyVersion>
-    <FileVersion>1.0.4</FileVersion>
-    <VersionPrefix>1.0.4</VersionPrefix>
+    <Version>2.1.5</Version>
     <EnableNETAnalyzers>False</EnableNETAnalyzers>
     <Description>Helpers for working with WinForms. Getting and setting values, simplifications for invoke, etc.</Description>
   </PropertyGroup>

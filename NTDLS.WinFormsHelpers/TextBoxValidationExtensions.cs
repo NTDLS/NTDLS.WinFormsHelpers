@@ -1,10 +1,18 @@
-﻿namespace NTDLS.WinFormsHelpers
+﻿using NTDLS.WinFormsHelpers.Internal;
+
+namespace NTDLS.WinFormsHelpers
 {
     /// <summary>
     /// Various functions for getting and validating values from WinForms textbox controls.
     /// </summary>
     public static class TextBoxValidationExtensions
     {
+        /// <summary>
+        /// Gets a value from a windows textbox and converts it to the specified type.
+        /// </summary>
+        public static T ValueAs<T>(this TextBox textBox)
+            => Converters.ConvertTo<T>(textBox.Text);
+
         /// <summary>
         /// Gets an integer value from a windows textbox. Ensures that the value falls within the given ranges.
         /// </summary>
