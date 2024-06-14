@@ -26,7 +26,7 @@
         /// Invokes the form to enable a control.
         /// </summary>
         /// <param name="control"></param>
-        public static void InvokeEnableControl(this Control control)
+        public static void InvokeEnable(this Control control)
         {
             if (control.InvokeRequired)
             {
