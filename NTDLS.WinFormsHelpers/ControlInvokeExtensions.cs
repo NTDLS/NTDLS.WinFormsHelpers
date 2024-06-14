@@ -21,5 +21,37 @@
                 control.Enabled = enabled;
             }
         }
+
+        /// <summary>
+        /// Invokes the form to enable a control.
+        /// </summary>
+        /// <param name="control"></param>
+        public static void InvokeEnableControl(this Control control)
+        {
+            if (control.InvokeRequired)
+            {
+                control.Invoke(new Action(() => control.Enabled = true));
+            }
+            else
+            {
+                control.Enabled = true;
+            }
+        }
+
+        /// <summary>
+        /// Invokes the form to disable a control.
+        /// </summary>
+        /// <param name="control"></param>
+        public static void InvokeDisable(this Control control)
+        {
+            if (control.InvokeRequired)
+            {
+                control.Invoke(new Action(() => control.Enabled = false));
+            }
+            else
+            {
+                control.Enabled = false;
+            }
+        }
     }
 }
