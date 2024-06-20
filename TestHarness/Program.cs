@@ -4,6 +4,10 @@
     {
         static void Main()
         {
+            ApplicationConfiguration.Initialize();
+
+            using var form = new FormMain();
+            form.ShowDialog();
         }
     }
 }

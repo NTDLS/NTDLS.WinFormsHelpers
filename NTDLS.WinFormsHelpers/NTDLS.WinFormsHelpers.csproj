@@ -23,9 +23,9 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>winforms;helpers;invoke;validation</PackageTags>
     <PackageReleaseNotes>
-      Added enable/disable control functions.
+      Added spinning activity indicator and thread safe progress form.
     </PackageReleaseNotes>
-    <Version>1.0.7</Version>
+    <Version>1.1.1</Version>
     <EnableNETAnalyzers>False</EnableNETAnalyzers>
     <Description>Helpers for working with WinForms. Getting and setting values, simplifications for invoke, etc.</Description>
   </PropertyGroup>
