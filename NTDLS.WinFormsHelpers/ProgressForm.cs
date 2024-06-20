@@ -1,4 +1,5 @@
-﻿using static System.Net.Mime.MediaTypeNames;
+﻿using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace NTDLS.WinFormsHelpers
 {
@@ -29,6 +30,8 @@ namespace NTDLS.WinFormsHelpers
             public bool Cancel = false;
         }
 
+        #region ~Ctor.
+
         /// <summary>
         /// Creates a new instance of the FormProgress which is used for multi-threaded progress reporting.
         /// </summary>
@@ -36,6 +39,210 @@ namespace NTDLS.WinFormsHelpers
         {
             _form = new FormProgress();
         }
+
+        /// <summary>
+        /// Creates a new instance of the FormProgress which is used for multi-threaded progress reporting.
+        /// </summary>
+        public ProgressForm(string title)
+        {
+            _form = new FormProgress();
+            _form.SetTitleText(title);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the FormProgress which is used for multi-threaded progress reporting.
+        /// </summary>
+        public ProgressForm(string title, string header)
+        {
+            _form = new FormProgress();
+            _form.SetTitleText(title);
+            _form.SetHeaderText(header);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the FormProgress which is used for multi-threaded progress reporting.
+        /// </summary>
+        public ProgressForm(string title, string header, string body)
+        {
+            _form = new FormProgress();
+            _form.SetTitleText(title);
+            _form.SetHeaderText(header);
+            _form.SetBodyText(body);
+        }
+
+        #endregion
+
+        #region Execution Helpers.
+
+        /// <summary>
+        /// Worker thread delegate.
+        /// </summary>
+        public delegate void NoParamWorkerWithVoid();
+
+        /// <summary>
+        /// Worker thread delegate.
+        /// </summary>
+        public delegate T NoParamWorkerWithResult<T>();
+
+        /// <summary>
+        /// Worker thread delegate.
+        /// </summary>
+        /// <param name="sender"></param>
+        public delegate void WorkerWithVoid(ProgressForm sender);
+
+        /// <summary>
+        /// Worker thread delegate.
+        /// </summary>
+        /// <param name="sender"></param>
+        public delegate T WorkerWithResult<T>(ProgressForm sender);
+
+        /// <summary>
+        /// Executes a workload in a seperate thread while showing a progress form.
+        /// Does all the work for you. Loads the form, waits on it, runs the worker, and closes the form when complete.
+        /// </summary>
+        /// <param name="worker"></param>
+        /// <returns></returns>
+        public T? Execute<T>(NoParamWorkerWithResult<T> worker)
+        {
+            T? result = default;
+
+            new Thread(() =>
+            {
+                WaitForVisible();
+                result = worker();
+                Close();
+                _form.Dispose();
+            }).Start();
+
+            ShowDialog();
+
+            return result;
+        }
+
+        /// <summary>
+        /// Executes a workload in a seperate thread while showing a progress form.
+        /// Does all the work for you. Loads the form, waits on it, runs the worker, and closes the form when complete.
+        /// </summary>
+        /// <param name="worker"></param>
+        /// <returns></returns>
+        public void Execute(NoParamWorkerWithVoid worker)
+        {
+            new Thread(() =>
+            {
+                WaitForVisible();
+                worker();
+                Close();
+                _form.Dispose();
+            }).Start();
+
+            ShowDialog();
+        }
+
+        /// <summary>
+        /// Executes a workload in a seperate thread while showing a progress form.
+        /// Does all the work for you. Loads the form, waits on it, runs the worker, and closes the form when complete.
+        /// </summary>
+        /// <param name="worker"></param>
+        /// <returns></returns>
+        public T? Execute<T>(WorkerWithResult<T> worker)
+        {
+            T? result = default;
+
+            new Thread(() =>
+            {
+                WaitForVisible();
+                result = worker(this);
+                Close();
+                _form.Dispose();
+            }).Start();
+
+            ShowDialog();
+
+            return result;
+        }
+
+        /// <summary>
+        /// Executes a workload in a seperate thread while showing a progress form.
+        /// Does all the work for you. Loads the form, waits on it, runs the worker, and closes the form when complete.
+        /// </summary>
+        /// <param name="worker"></param>
+        /// <returns></returns>
+        public void Execute(WorkerWithVoid worker)
+        {
+            new Thread(() =>
+            {
+                WaitForVisible();
+                worker(this);
+                Close();
+                _form.Dispose();
+            }).Start();
+
+            ShowDialog();
+        }
+
+        #endregion
+
+        #region MessageBox.
+
+        /// <summary>
+        /// Invokes the form to show a message box.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="title"></param>
+        /// <param name="buttons"></param>
+        /// <param name="icon"></param>
+        /// <returns></returns>
+        public DialogResult MessageBox(string message, string title, MessageBoxButtons buttons, MessageBoxIcon icon)
+        {
+            if (_form.InvokeRequired)
+            {
+                return _form.Invoke(new Func<DialogResult>(() => _form.InvokeMessageBox(message, title, buttons, icon)));
+            }
+            else
+            {
+                return System.Windows.Forms.MessageBox.Show(_form, message, title, buttons, icon);
+            }
+        }
+
+        /// <summary>
+        /// Invokes the form to show a message box.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="title"></param>
+        /// <param name="buttons"></param>
+        /// <returns></returns>
+        public DialogResult MessageBox(string message, string title, MessageBoxButtons buttons)
+        {
+            if (_form.InvokeRequired)
+            {
+                return _form.Invoke(new Func<DialogResult>(() => _form.InvokeMessageBox(message, title, buttons)));
+            }
+            else
+            {
+                return System.Windows.Forms.MessageBox.Show(_form, message, title, buttons);
+            }
+        }
+
+        /// <summary>
+        /// Invokes the form to show a message box.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="title"></param>
+        /// <returns></returns>
+        public DialogResult MessageBox(string message, string title)
+        {
+            if (_form.InvokeRequired)
+            {
+                return _form.Invoke(new Func<DialogResult>(() => _form.InvokeMessageBox(message, title)));
+            }
+            else
+            {
+                return System.Windows.Forms.MessageBox.Show(_form, message, title);
+            }
+        }
+
+        #endregion
+
 
         /// <summary>
         /// Used by the user to set proprietary state information;
@@ -52,7 +259,6 @@ namespace NTDLS.WinFormsHelpers
         /// </summary>
         public bool IsCancelPending { get => _form.IsCancelPending; }
 
-
         /// <summary>
         /// Shows a new progress form and returns the result when its closed.
         /// </summary>
@@ -65,6 +271,15 @@ namespace NTDLS.WinFormsHelpers
                 _form.SetTitleText(titleText);
             }
 
+            return _form.ShowDialog();
+        }
+
+        /// <summary>
+        /// Shows a new progress form and returns the result when its closed.
+        /// </summary>
+        /// <returns></returns>
+        public DialogResult ShowDialog()
+        {
             return _form.ShowDialog();
         }
 

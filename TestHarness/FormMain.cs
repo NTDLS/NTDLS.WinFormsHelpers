@@ -13,22 +13,23 @@ namespace TestHarness
         {
             var progressForm = new ProgressForm();
 
-            new Thread(() =>
+            progressForm.Execute(() =>
             {
-                progressForm.WaitForVisible();
-
                 progressForm.SetProgressMaximum(30);
 
-                for (int i = 0; i < 30; i++) 
+                for (int i = 0; i < 30; i++)
                 {
                     Thread.Sleep(100);
+
+                    if (i == 15)
+                    {
+                        progressForm.MessageBox("Half way there!", "Caption");
+
+                    }
+
                     progressForm.SetProgressValue(i);
                 }
-
-                progressForm.Close();
-            }).Start();
-
-            var result = progressForm.ShowDialog("Please wait...");
+            });
         }
     }
 }
