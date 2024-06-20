@@ -1,4 +1,4 @@
-﻿using NTDLS.WinFormsHelpers.Internal;
+﻿using NTDLS.Helpers;
 
 namespace NTDLS.WinFormsHelpers
 {

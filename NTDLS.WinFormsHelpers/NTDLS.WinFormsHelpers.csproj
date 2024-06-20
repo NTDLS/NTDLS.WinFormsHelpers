@@ -24,8 +24,9 @@
     <PackageTags>winforms;helpers;invoke;validation</PackageTags>
     <PackageReleaseNotes>
       Removed non-winforms functions to NTDLS.Helpers.
+      Added NTDLS.Helpers nuget for non-winforms cross-functions.
     </PackageReleaseNotes>
-    <Version>1.2.0</Version>
+    <Version>1.2.1</Version>
     <EnableNETAnalyzers>False</EnableNETAnalyzers>
     <Description>Helpers for working with WinForms. Getting and setting values, simplifications for invoke, etc.</Description>
   </PropertyGroup>
@@ -39,6 +40,10 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NTDLS.Helpers" Version="1.0.0" />
   </ItemGroup>
 
 </Project>
