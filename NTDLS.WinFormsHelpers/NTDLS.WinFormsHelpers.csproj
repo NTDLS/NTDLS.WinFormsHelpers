@@ -26,8 +26,9 @@
       Added spinning activity indicator and thread safe progress form.
       Added thread safe progress form message boxes.
       Added exception helpers.
+      Added Task/async helpers.
     </PackageReleaseNotes>
-    <Version>1.1.5</Version>
+    <Version>1.1.6</Version>
     <EnableNETAnalyzers>False</EnableNETAnalyzers>
     <Description>Helpers for working with WinForms. Getting and setting values, simplifications for invoke, etc.</Description>
   </PropertyGroup>
