@@ -6,6 +6,23 @@
     public static class ControlInvokeExtensions
     {
         /// <summary>
+        /// Invokes the control to set its text.
+        /// </summary>
+        /// <param name="control"></param>
+        /// <param name="text"></param>
+        public static void InvokeTestText(this Control control, string text)
+        {
+            if (control.InvokeRequired)
+            {
+                control.Invoke(new Action(() => control.Text = text));
+            }
+            else
+            {
+                control.Text = text;
+            }
+        }
+
+        /// <summary>
         /// Invokes the form to enable or disable a control.
         /// </summary>
         /// <param name="control"></param>
