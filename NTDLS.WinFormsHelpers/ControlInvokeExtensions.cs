@@ -10,7 +10,7 @@
         /// </summary>
         /// <param name="control"></param>
         /// <param name="text"></param>
-        public static void InvokeTestText(this Control control, string text)
+        public static void InvokeSetText(this Control control, string text)
         {
             if (control.InvokeRequired)
             {
