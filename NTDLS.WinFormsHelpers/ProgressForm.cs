@@ -196,7 +196,7 @@ namespace NTDLS.WinFormsHelpers
         {
             if (_form.InvokeRequired)
             {
-                return _form.Invoke(new Func<DialogResult>(() => _form.InvokeMessageBox(message, title, buttons, icon)));
+                return _form.Invoke(new Func<DialogResult>(() => _form.MessageBox(message, title, buttons, icon)));
             }
             else
             {
@@ -215,7 +215,7 @@ namespace NTDLS.WinFormsHelpers
         {
             if (_form.InvokeRequired)
             {
-                return _form.Invoke(new Func<DialogResult>(() => _form.InvokeMessageBox(message, title, buttons)));
+                return _form.Invoke(new Func<DialogResult>(() => _form.MessageBox(message, title, buttons)));
             }
             else
             {
@@ -233,7 +233,7 @@ namespace NTDLS.WinFormsHelpers
         {
             if (_form.InvokeRequired)
             {
-                return _form.Invoke(new Func<DialogResult>(() => _form.InvokeMessageBox(message, title)));
+                return _form.Invoke(new Func<DialogResult>(() => _form.MessageBox(message, title)));
             }
             else
             {

@@ -18,7 +18,7 @@ namespace NTDLS.WinFormsHelpers
         {
             foreach (var control in controls)
             {
-                tooltip.SetToolTip(control, Text.InsertLineBreaks(text, wrapLength));
+                tooltip.SetToolTip(control, Text.SoftWrap(text, wrapLength));
             }
         }
 
@@ -31,7 +31,7 @@ namespace NTDLS.WinFormsHelpers
         /// <param name="wrapLength">Optional number of characters to wrap the tooltip text to.</param>
         public static void AddControls(this ToolTip tooltip, Control control, string text, int wrapLength = 50)
         {
-            tooltip.SetToolTip(control, Text.InsertLineBreaks(text, wrapLength));
+            tooltip.SetToolTip(control, Text.SoftWrap(text, wrapLength));
         }
 
         /// <summary>
