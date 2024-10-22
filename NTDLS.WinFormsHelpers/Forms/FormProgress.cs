@@ -1,4 +1,4 @@
-﻿namespace NTDLS.WinFormsHelpers
+﻿namespace NTDLS.WinFormsHelpers.Forms
 {
     /// <summary>
     /// Progress form used for multi-threaded progress reporting.

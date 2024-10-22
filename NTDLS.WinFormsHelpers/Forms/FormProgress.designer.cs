@@ -1,11 +1,11 @@
 ﻿using NTDLS.WinFormsHelpers.Controls;
 
-namespace NTDLS.WinFormsHelpers
+namespace NTDLS.WinFormsHelpers.Forms
 {
     /// <summary>
     /// Progress form used for multi-threaded progress reporting.
     /// </summary>
-    partial class FormProgress
+    internal partial class FormProgress
     {
         /// <summary>
         /// Required designer variable.

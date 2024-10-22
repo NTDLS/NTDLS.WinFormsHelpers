@@ -10,11 +10,11 @@
         /// </summary>
         /// <param name="form"></param>
         /// <param name="result"></param>
-        public static void Close(this Form form, DialogResult result)
+        public static void InvokeClose(this Form form, DialogResult result)
         {
             if (form.InvokeRequired)
             {
-                form.Invoke(() => form.Close(result));
+                form.Invoke(() => form.InvokeClose(result));
             }
             else
             {
@@ -32,11 +32,11 @@
         /// <param name="buttons"></param>
         /// <param name="icon"></param>
         /// <returns></returns>
-        public static DialogResult MessageBox(this Form form, string message, string title, MessageBoxButtons buttons, MessageBoxIcon icon)
+        public static DialogResult InvokeMessageBox(this Form form, string message, string title, MessageBoxButtons buttons, MessageBoxIcon icon)
         {
             if (form.InvokeRequired)
             {
-                return form.Invoke(new Func<DialogResult>(() => form.MessageBox(message, title, buttons, icon)));
+                return form.Invoke(new Func<DialogResult>(() => form.InvokeMessageBox(message, title, buttons, icon)));
             }
             else
             {
@@ -52,11 +52,11 @@
         /// <param name="title"></param>
         /// <param name="buttons"></param>
         /// <returns></returns>
-        public static DialogResult MessageBox(this Form form, string message, string title, MessageBoxButtons buttons)
+        public static DialogResult InvokeMessageBox(this Form form, string message, string title, MessageBoxButtons buttons)
         {
             if (form.InvokeRequired)
             {
-                return form.Invoke(new Func<DialogResult>(() => form.MessageBox(message, title, buttons)));
+                return form.Invoke(new Func<DialogResult>(() => form.InvokeMessageBox(message, title, buttons)));
             }
             else
             {
@@ -71,11 +71,11 @@
         /// <param name="message"></param>
         /// <param name="title"></param>
         /// <returns></returns>
-        public static DialogResult MessageBox(this Form form, string message, string title)
+        public static DialogResult InvokeMessageBox(this Form form, string message, string title)
         {
             if (form.InvokeRequired)
             {
-                return form.Invoke(new Func<DialogResult>(() => form.MessageBox(message, title)));
+                return form.Invoke(new Func<DialogResult>(() => form.InvokeMessageBox(message, title)));
             }
             else
             {

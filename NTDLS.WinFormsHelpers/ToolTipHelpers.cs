@@ -56,7 +56,6 @@ namespace NTDLS.WinFormsHelpers
             return tooltip;
         }
 
-
         /// <summary>
         /// Creates a tooltip control with custom settings and hooks the given form for automatic disposal.
         /// </summary>
