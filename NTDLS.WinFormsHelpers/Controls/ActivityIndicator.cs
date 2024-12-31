@@ -1,4 +1,5 @@
-﻿using System.Drawing.Drawing2D;
+﻿using System.ComponentModel;
+using System.Drawing.Drawing2D;
 
 namespace NTDLS.WinFormsHelpers.Controls
 {
@@ -38,6 +39,8 @@ namespace NTDLS.WinFormsHelpers.Controls
         /// <summary>
         /// The color of the inactive segment.
         /// </summary>
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Color InactiveSegmentColor
         {
             get
@@ -54,6 +57,8 @@ namespace NTDLS.WinFormsHelpers.Controls
         /// <summary>
         /// The color of the active segment.
         /// </summary>
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Color ActiveSegmentColor
         {
             get
@@ -70,6 +75,8 @@ namespace NTDLS.WinFormsHelpers.Controls
         /// <summary>
         /// The color of the transition segment.
         /// </summary>
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Color TransitionSegmentColor
         {
             get
@@ -86,6 +93,8 @@ namespace NTDLS.WinFormsHelpers.Controls
         /// <summary>
         /// Whether the inactive portion of the control should appear active.
         /// </summary>
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool BehindTransitionSegmentIsActive
         {
             get
@@ -102,6 +111,8 @@ namespace NTDLS.WinFormsHelpers.Controls
         /// <summary>
         /// Gets or sets the current transition segment.
         /// </summary>
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int TransitionSegment
         {
             get
@@ -122,6 +133,8 @@ namespace NTDLS.WinFormsHelpers.Controls
         /// <summary>
         /// Whether the control should auto-update or not.
         /// </summary>
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool AutoIncrement
         {
             get
@@ -149,8 +162,10 @@ namespace NTDLS.WinFormsHelpers.Controls
         }
 
         /// <summary>
-        /// The frequency in miliseconds that the control updates.
+        /// The frequency in milliseconds that the control updates.
         /// </summary>
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double AutoIncrementFrequency
         {
             get

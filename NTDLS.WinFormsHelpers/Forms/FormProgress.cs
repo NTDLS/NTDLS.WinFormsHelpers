@@ -1,4 +1,6 @@
-﻿namespace NTDLS.WinFormsHelpers.Forms
+﻿using System.ComponentModel;
+
+namespace NTDLS.WinFormsHelpers.Forms
 {
     /// <summary>
     /// Progress form used for multi-threaded progress reporting.
@@ -17,11 +19,15 @@
         /// <summary>
         /// Indicates whether the form has been shown or not.
         /// </summary>
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool HasBeenShown { get; private set; } = false;
 
         /// <summary>
         /// Indicates whether a cancel operation has been started.
         /// </summary>
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsCancelPending { get; private set; } = false;
 
         /// <summary>
