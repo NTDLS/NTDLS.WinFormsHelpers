@@ -31,5 +31,27 @@ namespace TestHarness
                 }
             });
         }
+
+        private async void buttonProgressAsync_Click(object sender, EventArgs e)
+        {
+            var progressForm = new ProgressForm();
+
+            await progressForm.ExecuteAsync(async () =>
+            {
+                progressForm.SetProgressMaximum(30);
+
+                for (int i = 0; i < 30; i++)
+                {
+                    await Task.Delay(100);
+                    if (i == 15)
+                    {
+                        progressForm.MessageBox("Half way there!", "Caption");
+
+                    }
+
+                    progressForm.SetProgressValue(i);
+                }
+            });
+        }
     }
 }
