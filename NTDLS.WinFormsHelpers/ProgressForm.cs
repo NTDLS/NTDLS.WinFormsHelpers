@@ -92,6 +92,26 @@ namespace NTDLS.WinFormsHelpers
         public delegate T WorkerWithResult<T>(ProgressForm sender);
 
         /// <summary>
+        /// Worker thread delegate.
+        /// </summary>
+        public delegate Task AsyncNoParamWorkerWithVoid();
+
+        /// <summary>
+        /// Worker thread delegate.
+        /// </summary>
+        public delegate Task<T> AsyncNoParamWorkerWithResult<T>();
+
+        /// <summary>
+        /// Worker thread delegate.
+        /// </summary>
+        public delegate Task AsyncWorkerWithVoid(ProgressForm sender);
+
+        /// <summary>
+        /// Worker thread delegate.
+        /// </summary>
+        public delegate Task<T> AsyncWorkerWithResult<T>(ProgressForm sender);
+
+        /// <summary>
         /// Executes a workload in a separate thread while showing a progress form.
         /// Does all the work for you. Loads the form, waits on it, runs the worker, and closes the form when complete.
         /// </summary>
@@ -174,12 +194,12 @@ namespace NTDLS.WinFormsHelpers
         /// Executes a workload in a separate thread while showing a progress form.
         /// Does all the work for you. Loads the form, waits on it, runs the worker, and closes the form when complete.
         /// </summary>
-        public async Task<T?> ExecuteAsync<T>(NoParamWorkerWithResult<T> worker)
+        public async Task<T?> ExecuteAsync<T>(AsyncNoParamWorkerWithResult<T> worker)
         {
-            var workerTask = Task.Run(() =>
+            var workerTask = Task.Run(async () =>
             {
                 WaitForVisible();
-                var workerResult = worker();
+                var workerResult = await worker();
                 Close();
                 _form.Dispose();
                 return workerResult;
@@ -194,12 +214,12 @@ namespace NTDLS.WinFormsHelpers
         /// Executes a workload in a separate thread while showing a progress form.
         /// Does all the work for you. Loads the form, waits on it, runs the worker, and closes the form when complete.
         /// </summary>
-        public async Task ExecuteAsync(NoParamWorkerWithVoid worker)
+        public async Task ExecuteAsync(AsyncNoParamWorkerWithVoid worker)
         {
-            var workerTask = Task.Run(() =>
+            var workerTask = Task.Run(async () =>
             {
                 WaitForVisible();
-                worker();
+                await worker();
                 Close();
                 _form.Dispose();
             });
@@ -213,12 +233,12 @@ namespace NTDLS.WinFormsHelpers
         /// Executes a workload in a separate thread while showing a progress form.
         /// Does all the work for you. Loads the form, waits on it, runs the worker, and closes the form when complete.
         /// </summary>
-        public async Task<T?> ExecuteAsync<T>(WorkerWithResult<T> worker)
+        public async Task<T?> ExecuteAsync<T>(AsyncWorkerWithResult<T> worker)
         {
-            var workerTask = Task.Run(() =>
+            var workerTask = Task.Run(async () =>
             {
                 WaitForVisible();
-                var workerResult = worker(this);
+                var workerResult = await worker(this);
                 Close();
                 _form.Dispose();
                 return workerResult;
@@ -233,12 +253,12 @@ namespace NTDLS.WinFormsHelpers
         /// Executes a workload in a separate thread while showing a progress form.
         /// Does all the work for you. Loads the form, waits on it, runs the worker, and closes the form when complete.
         /// </summary>
-        public async Task ExecuteAsync(WorkerWithVoid worker)
+        public async Task ExecuteAsync(AsyncWorkerWithVoid worker)
         {
-            var workerTask = Task.Run(() =>
+            var workerTask = Task.Run(async () =>
             {
                 WaitForVisible();
-                worker(this);
+                await worker(this);
                 Close();
                 _form.Dispose();
             });
