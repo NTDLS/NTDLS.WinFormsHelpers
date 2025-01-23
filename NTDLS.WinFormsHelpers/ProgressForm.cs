@@ -14,8 +14,6 @@ namespace NTDLS.WinFormsHelpers
         /// <summary>
         /// Delegate used for OnCancel event.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         public delegate void EventOnCancel(object sender, OnCancelInfo e);
 
         /// <summary>
@@ -86,21 +84,17 @@ namespace NTDLS.WinFormsHelpers
         /// <summary>
         /// Worker thread delegate.
         /// </summary>
-        /// <param name="sender"></param>
         public delegate void WorkerWithVoid(ProgressForm sender);
 
         /// <summary>
         /// Worker thread delegate.
         /// </summary>
-        /// <param name="sender"></param>
         public delegate T WorkerWithResult<T>(ProgressForm sender);
 
         /// <summary>
-        /// Executes a workload in a seperate thread while showing a progress form.
+        /// Executes a workload in a separate thread while showing a progress form.
         /// Does all the work for you. Loads the form, waits on it, runs the worker, and closes the form when complete.
         /// </summary>
-        /// <param name="worker"></param>
-        /// <returns></returns>
         public T? Execute<T>(NoParamWorkerWithResult<T> worker)
         {
             T? result = default;
@@ -119,11 +113,9 @@ namespace NTDLS.WinFormsHelpers
         }
 
         /// <summary>
-        /// Executes a workload in a seperate thread while showing a progress form.
+        /// Executes a workload in a separate thread while showing a progress form.
         /// Does all the work for you. Loads the form, waits on it, runs the worker, and closes the form when complete.
         /// </summary>
-        /// <param name="worker"></param>
-        /// <returns></returns>
         public void Execute(NoParamWorkerWithVoid worker)
         {
             new Thread(() =>
@@ -138,11 +130,9 @@ namespace NTDLS.WinFormsHelpers
         }
 
         /// <summary>
-        /// Executes a workload in a seperate thread while showing a progress form.
+        /// Executes a workload in a separate thread while showing a progress form.
         /// Does all the work for you. Loads the form, waits on it, runs the worker, and closes the form when complete.
         /// </summary>
-        /// <param name="worker"></param>
-        /// <returns></returns>
         public T? Execute<T>(WorkerWithResult<T> worker)
         {
             T? result = default;
@@ -161,11 +151,9 @@ namespace NTDLS.WinFormsHelpers
         }
 
         /// <summary>
-        /// Executes a workload in a seperate thread while showing a progress form.
+        /// Executes a workload in a separate thread while showing a progress form.
         /// Does all the work for you. Loads the form, waits on it, runs the worker, and closes the form when complete.
         /// </summary>
-        /// <param name="worker"></param>
-        /// <returns></returns>
         public void Execute(WorkerWithVoid worker)
         {
             new Thread(() =>
@@ -179,6 +167,87 @@ namespace NTDLS.WinFormsHelpers
             ShowDialog();
         }
 
+
+        //----------
+
+        /// <summary>
+        /// Executes a workload in a separate thread while showing a progress form.
+        /// Does all the work for you. Loads the form, waits on it, runs the worker, and closes the form when complete.
+        /// </summary>
+        public async Task<T?> ExecuteAsync<T>(NoParamWorkerWithResult<T> worker)
+        {
+            var workerTask = Task.Run(() =>
+            {
+                WaitForVisible();
+                var workerResult = worker();
+                Close();
+                _form.Dispose();
+                return workerResult;
+            });
+
+            ShowDialog();
+
+            return await workerTask;
+        }
+
+        /// <summary>
+        /// Executes a workload in a separate thread while showing a progress form.
+        /// Does all the work for you. Loads the form, waits on it, runs the worker, and closes the form when complete.
+        /// </summary>
+        public async Task ExecuteAsync(NoParamWorkerWithVoid worker)
+        {
+            var workerTask = Task.Run(() =>
+            {
+                WaitForVisible();
+                worker();
+                Close();
+                _form.Dispose();
+            });
+
+            ShowDialog();
+
+            await workerTask;
+        }
+
+        /// <summary>
+        /// Executes a workload in a separate thread while showing a progress form.
+        /// Does all the work for you. Loads the form, waits on it, runs the worker, and closes the form when complete.
+        /// </summary>
+        public async Task<T?> ExecuteAsync<T>(WorkerWithResult<T> worker)
+        {
+            var workerTask = Task.Run(() =>
+            {
+                WaitForVisible();
+                var workerResult = worker(this);
+                Close();
+                _form.Dispose();
+                return workerResult;
+            });
+
+            ShowDialog();
+
+            return await workerTask;
+        }
+
+        /// <summary>
+        /// Executes a workload in a separate thread while showing a progress form.
+        /// Does all the work for you. Loads the form, waits on it, runs the worker, and closes the form when complete.
+        /// </summary>
+        public async Task ExecuteAsync(WorkerWithVoid worker)
+        {
+            var workerTask = Task.Run(() =>
+            {
+                WaitForVisible();
+                worker(this);
+                Close();
+                _form.Dispose();
+            });
+
+            ShowDialog();
+
+            await workerTask;
+        }
+
         #endregion
 
         #region MessageBox.
@@ -186,11 +255,6 @@ namespace NTDLS.WinFormsHelpers
         /// <summary>
         /// Invokes the form to show a message box.
         /// </summary>
-        /// <param name="message"></param>
-        /// <param name="title"></param>
-        /// <param name="buttons"></param>
-        /// <param name="icon"></param>
-        /// <returns></returns>
         public DialogResult MessageBox(string message, string title, MessageBoxButtons buttons, MessageBoxIcon icon)
         {
             if (_form.InvokeRequired)
@@ -206,10 +270,6 @@ namespace NTDLS.WinFormsHelpers
         /// <summary>
         /// Invokes the form to show a message box.
         /// </summary>
-        /// <param name="message"></param>
-        /// <param name="title"></param>
-        /// <param name="buttons"></param>
-        /// <returns></returns>
         public DialogResult MessageBox(string message, string title, MessageBoxButtons buttons)
         {
             if (_form.InvokeRequired)
@@ -225,9 +285,6 @@ namespace NTDLS.WinFormsHelpers
         /// <summary>
         /// Invokes the form to show a message box.
         /// </summary>
-        /// <param name="message"></param>
-        /// <param name="title"></param>
-        /// <returns></returns>
         public DialogResult MessageBox(string message, string title)
         {
             if (_form.InvokeRequired)
@@ -241,7 +298,6 @@ namespace NTDLS.WinFormsHelpers
         }
 
         #endregion
-
 
         /// <summary>
         /// Used by the user to set proprietary state information;
@@ -261,8 +317,6 @@ namespace NTDLS.WinFormsHelpers
         /// <summary>
         /// Shows a new progress form and returns the result when its closed.
         /// </summary>
-        /// <param name="titleText"></param>
-        /// <returns></returns>
         public DialogResult ShowDialog(string titleText)
         {
             lock (LockObject)
@@ -276,7 +330,6 @@ namespace NTDLS.WinFormsHelpers
         /// <summary>
         /// Shows a new progress form and returns the result when its closed.
         /// </summary>
-        /// <returns></returns>
         public DialogResult ShowDialog()
         {
             return _form.ShowDialog();
@@ -285,10 +338,6 @@ namespace NTDLS.WinFormsHelpers
         /// <summary>
         /// Shows a new progress form and returns the result when its closed.
         /// </summary>
-        /// <param name="titleText"></param>
-        /// <param name="headerText"></param>
-        /// <param name="bodyText"></param>
-        /// <returns></returns>
         public DialogResult ShowDialog(string titleText, string headerText, string bodyText)
         {
             lock (LockObject)
@@ -304,9 +353,6 @@ namespace NTDLS.WinFormsHelpers
         /// <summary>
         /// Shows a new progress form and returns the result when its closed.
         /// </summary>
-        /// <param name="headerText"></param>
-        /// <param name="bodyText"></param>
-        /// <returns></returns>
         public DialogResult ShowDialog(string headerText, string bodyText)
         {
             lock (LockObject)
@@ -321,9 +367,6 @@ namespace NTDLS.WinFormsHelpers
         /// <summary>
         /// Shows a new progress form and returns the result when its closed.
         /// </summary>
-        /// <param name="headerText"></param>
-        /// <param name="onCancel"></param>
-        /// <returns></returns>
         public DialogResult ShowDialog(string headerText, EventOnCancel onCancel)
         {
             lock (LockObject)
@@ -339,10 +382,6 @@ namespace NTDLS.WinFormsHelpers
         /// <summary>
         /// Shows a new progress form and returns the result when its closed.
         /// </summary>
-        /// <param name="headerText"></param>
-        /// <param name="bodyText"></param>
-        /// <param name="onCancel"></param>
-        /// <returns></returns>
         public DialogResult ShowDialog(string headerText, string bodyText, EventOnCancel onCancel)
         {
             lock (LockObject)
@@ -377,7 +416,6 @@ namespace NTDLS.WinFormsHelpers
         /// <summary>
         /// Closes the form with the given dialog result in a thread safe manner.
         /// </summary>
-        /// <param name="result"></param>
         public void Close(DialogResult result)
             => _form.Close(result);
 
@@ -390,35 +428,30 @@ namespace NTDLS.WinFormsHelpers
         /// <summary>
         /// Sets the header label text in a thread safe manner (this is not the title).
         /// </summary>
-        /// <param name="text"></param>
         public void SetHeaderText(string text)
             => _form.SetHeaderText(text);
 
         /// <summary>
         /// Sets the body label text in a thread safe manner (this is not the title).
         /// </summary>
-        /// <param name="text"></param>
         public void SetBodyText(string text)
             => _form.SetBodyText(text);
 
         /// <summary>
         /// Sets the form title text in a thread safe manner.
         /// </summary>
-        /// <param name="text"></param>
         public void SetTitleText(string text)
             => _form.SetTitleText(text);
 
         /// <summary>
         /// Sets the progress bar minimum value in a thread safe manner.
         /// </summary>
-        /// <param name="value"></param>
         public void SetProgressMinimum(int value)
             => _form.SetProgressMinimum(value);
 
         /// <summary>
         /// Sets the progress bar maximum value in a thread safe manner.
         /// </summary>
-        /// <param name="value"></param>
         public void SetProgressMaximum(int value)
             => _form.SetProgressMaximum(value);
 
@@ -431,21 +464,18 @@ namespace NTDLS.WinFormsHelpers
         /// <summary>
         /// Sets the progress bar value in a thread safe manner.
         /// </summary>
-        /// <param name="value"></param>
         public void SetProgressValue(int value)
             => _form.SetProgressValue(value);
 
         /// <summary>
         /// Sets the progress bar style in a thread safe manner.
         /// </summary>
-        /// <param name="value"></param>
         public void SeProgressStyle(ProgressBarStyle value)
             => _form.SeProgressStyle(value);
 
         /// <summary>
         /// Enables or disabled cancelation support in a thread safe manner.
         /// </summary>
-        /// <param name="value"></param>
         public void SetCanCancel(bool value)
             => _form.SetCanCancel(value);
     }
