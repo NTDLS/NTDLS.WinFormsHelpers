@@ -23,9 +23,9 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>winforms;helpers;invoke;validation</PackageTags>
     <PackageReleaseNotes>
-      Async progress form execution helpers.
+      Dependeny updates.
     </PackageReleaseNotes>
-    <Version>1.3.6</Version>
+    <Version>1.3.7</Version>
     <EnableNETAnalyzers>False</EnableNETAnalyzers>
     <Description>Helpers for working with WinForms. Getting and setting values, simplifications for invoke, etc.</Description>
   </PropertyGroup>
@@ -42,7 +42,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NTDLS.Helpers" Version="1.3.11" />
+    <PackageReference Include="NTDLS.Helpers" Version="1.3.12" />
   </ItemGroup>
 
 </Project>
