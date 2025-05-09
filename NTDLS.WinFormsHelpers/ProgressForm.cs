@@ -7,6 +7,12 @@ namespace NTDLS.WinFormsHelpers
     /// </summary>
     public class ProgressForm
     {
+        /// <summary>
+        /// Delegate used to initialize the form.
+        /// </summary>
+        /// <param name="form"></param>
+        public delegate void InitializeForm(Form form);
+
         private const string LockObject = "FormProgress.Singleton.LockObject";
 
         private readonly FormProgress _form;
@@ -32,26 +38,37 @@ namespace NTDLS.WinFormsHelpers
         /// <summary>
         /// Creates a new instance of the FormProgress which is used for multi-threaded progress reporting.
         /// </summary>
-        public ProgressForm()
+        public ProgressForm(InitializeForm? initializeForm = null)
         {
             _form = new FormProgress();
+
+            if(initializeForm != null)
+                initializeForm(_form);
         }
 
         /// <summary>
         /// Creates a new instance of the FormProgress which is used for multi-threaded progress reporting.
         /// </summary>
-        public ProgressForm(string title)
+        public ProgressForm(string title, InitializeForm? initializeForm = null)
         {
             _form = new FormProgress();
+
+            if (initializeForm != null)
+                initializeForm(_form);
+
             _form.SetTitleText(title);
         }
 
         /// <summary>
         /// Creates a new instance of the FormProgress which is used for multi-threaded progress reporting.
         /// </summary>
-        public ProgressForm(string title, string header)
+        public ProgressForm(string title, string header, InitializeForm? initializeForm = null)
         {
             _form = new FormProgress();
+
+            if (initializeForm != null)
+                initializeForm(_form);
+
             _form.SetTitleText(title);
             _form.SetHeaderText(header);
         }
@@ -59,9 +76,13 @@ namespace NTDLS.WinFormsHelpers
         /// <summary>
         /// Creates a new instance of the FormProgress which is used for multi-threaded progress reporting.
         /// </summary>
-        public ProgressForm(string title, string header, string body)
+        public ProgressForm(string title, string header, string body, InitializeForm? initializeForm = null)
         {
             _form = new FormProgress();
+
+            if (initializeForm != null)
+                initializeForm(_form);
+
             _form.SetTitleText(title);
             _form.SetHeaderText(header);
             _form.SetBodyText(body);
