@@ -5,7 +5,7 @@ namespace NTDLS.WinFormsHelpers
     /// <summary>
     /// Progress form used for multi-threaded progress reporting.
     /// </summary>
-    public class ProgressForm
+    public class ProgressForm : IDisposable
     {
         /// <summary>
         /// Delegate used to initialize the form.
@@ -36,14 +36,21 @@ namespace NTDLS.WinFormsHelpers
         #region ~Ctor.
 
         /// <summary>
+        /// Disposes the form and releases all resources.
+        /// </summary>
+        public void Dispose()
+        {
+            _form.Dispose();
+        }
+
+        /// <summary>
         /// Creates a new instance of the FormProgress which is used for multi-threaded progress reporting.
         /// </summary>
         public ProgressForm(InitializeForm? initializeForm = null)
         {
             _form = new FormProgress();
 
-            if(initializeForm != null)
-                initializeForm(_form);
+            initializeForm?.Invoke(_form);
         }
 
         /// <summary>
@@ -53,8 +60,7 @@ namespace NTDLS.WinFormsHelpers
         {
             _form = new FormProgress();
 
-            if (initializeForm != null)
-                initializeForm(_form);
+            initializeForm?.Invoke(_form);
 
             _form.SetTitleText(title);
         }
@@ -66,8 +72,7 @@ namespace NTDLS.WinFormsHelpers
         {
             _form = new FormProgress();
 
-            if (initializeForm != null)
-                initializeForm(_form);
+            initializeForm?.Invoke(_form);
 
             _form.SetTitleText(title);
             _form.SetHeaderText(header);
@@ -80,8 +85,7 @@ namespace NTDLS.WinFormsHelpers
         {
             _form = new FormProgress();
 
-            if (initializeForm != null)
-                initializeForm(_form);
+            initializeForm?.Invoke(_form);
 
             _form.SetTitleText(title);
             _form.SetHeaderText(header);
@@ -145,7 +149,6 @@ namespace NTDLS.WinFormsHelpers
                 WaitForVisible();
                 result = worker();
                 Close();
-                _form.Dispose();
             }).Start();
 
             ShowDialog();
@@ -164,7 +167,6 @@ namespace NTDLS.WinFormsHelpers
                 WaitForVisible();
                 worker();
                 Close();
-                _form.Dispose();
             }).Start();
 
             ShowDialog();
@@ -183,7 +185,6 @@ namespace NTDLS.WinFormsHelpers
                 WaitForVisible();
                 result = worker(this);
                 Close();
-                _form.Dispose();
             }).Start();
 
             ShowDialog();
@@ -202,7 +203,6 @@ namespace NTDLS.WinFormsHelpers
                 WaitForVisible();
                 worker(this);
                 Close();
-                _form.Dispose();
             }).Start();
 
             ShowDialog();
@@ -222,7 +222,6 @@ namespace NTDLS.WinFormsHelpers
                 WaitForVisible();
                 var workerResult = await worker();
                 Close();
-                _form.Dispose();
                 return workerResult;
             });
 
@@ -242,7 +241,6 @@ namespace NTDLS.WinFormsHelpers
                 WaitForVisible();
                 await worker();
                 Close();
-                _form.Dispose();
             });
 
             ShowDialog();
@@ -261,7 +259,6 @@ namespace NTDLS.WinFormsHelpers
                 WaitForVisible();
                 var workerResult = await worker(this);
                 Close();
-                _form.Dispose();
                 return workerResult;
             });
 
@@ -281,7 +278,6 @@ namespace NTDLS.WinFormsHelpers
                 WaitForVisible();
                 await worker(this);
                 Close();
-                _form.Dispose();
             });
 
             ShowDialog();
