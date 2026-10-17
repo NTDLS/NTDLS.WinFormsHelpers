@@ -5,7 +5,8 @@ namespace NTDLS.WinFormsHelpers
     /// <summary>
     /// Progress form used for multi-threaded progress reporting.
     /// </summary>
-    public class ProgressForm : IDisposable
+    public class ProgressForm
+        : IDisposable
     {
         /// <summary>
         /// Delegate used to initialize the form.

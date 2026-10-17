@@ -5,7 +5,8 @@ namespace NTDLS.WinFormsHelpers.Forms
     /// <summary>
     /// Progress form used for multi-threaded progress reporting.
     /// </summary>
-    internal partial class FormProgress : Form
+    internal partial class FormProgress
+        : Form
     {
         #region Events
 
@@ -36,6 +37,7 @@ namespace NTDLS.WinFormsHelpers.Forms
         public FormProgress()
         {
             InitializeComponent();
+            Theming.ApplyDarkMode(this);
 
             labelBody.Text = "";
             buttonCancel.Enabled = false;
