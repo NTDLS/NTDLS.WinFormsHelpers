@@ -30,6 +30,7 @@
         {
             buttonProgress = new Button();
             buttonProgresssAsync = new Button();
+            buttonAbout = new Button();
             SuspendLayout();
             // 
             // buttonProgress
@@ -52,11 +53,22 @@
             buttonProgresssAsync.UseVisualStyleBackColor = true;
             buttonProgresssAsync.Click += buttonProgressAsync_Click;
             // 
+            // buttonAbout
+            // 
+            buttonAbout.Location = new Point(127, 158);
+            buttonAbout.Name = "buttonAbout";
+            buttonAbout.Size = new Size(75, 23);
+            buttonAbout.TabIndex = 2;
+            buttonAbout.Text = "About";
+            buttonAbout.UseVisualStyleBackColor = true;
+            buttonAbout.Click += buttonAbout_Click;
+            // 
             // FormMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(499, 258);
+            Controls.Add(buttonAbout);
             Controls.Add(buttonProgresssAsync);
             Controls.Add(buttonProgress);
             Name = "FormMain";
@@ -69,5 +81,6 @@
 
         private Button buttonProgress;
         private Button buttonProgresssAsync;
+        private Button buttonAbout;
     }
 }

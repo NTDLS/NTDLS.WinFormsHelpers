@@ -9,11 +9,9 @@ namespace NTDLS.WinFormsHelpers.Forms
     /// applies dark-mode fixups and optionally presents as a topmost taskbar window with an animated rotating logo.
     /// </summary>
     /// <remarks>Constructor configures AcceptButton and CancelButton, applies dark-mode fixups, sets
-    /// StartPosition and TopMost according to showInTaskbar, and accepts optional title, icon, and logo. Provides
-    /// thread-safe SetTitleText, SetLogoImage, and SetIcon methods. Renders a smoothly animated, sinusoidally rotated
-    /// logo via a Timer and a custom Paint handler that scales the image to fit at the maximum rotation angle. On load
-    /// it enumerates nearby assemblies to populate the version list and stops and disposes the rotation timer when the
-    /// form closes.</remarks>
+    /// StartPosition and TopMost according to showInTaskbar, and accepts optional title, icon, and logo.
+    /// Renders a smoothly animated, sinusoidally rotated logo via a Timer and a custom Paint handler that scales the image to fit at the maximum rotation angle.
+    /// On load it enumerates nearby assemblies to populate the version list.</remarks>
     public partial class FormAbout
         : Form
     {
@@ -32,25 +30,25 @@ namespace NTDLS.WinFormsHelpers.Forms
         /// CenterParent and TopMost is false.</remarks>
         /// <param name="title">Window title to display; if null the existing title is retained.</param>
         /// <param name="icon">Window icon to display; if null the existing icon is retained.</param>
-        /// <param name="logoImage">Logo image to display in the picture box; if null no image is set.</param>
+        /// <param name="logoImage">Logo image to display in the picture box; if null the default image is used. Size should be square and preferably at least 100x100 pixels.</param>
         /// <param name="showInTaskbar">True to show the form in the taskbar, center on the screen, and make it topmost; false to center it to the
         /// parent and not show in the taskbar.</param>
         public FormAbout(string? title = null, Icon? icon = null, Image? logoImage = null, bool showInTaskbar = true)
         {
             InitializeComponent();
-            Theming.ApplyDarkMode(this);
+            Theming.InitializeForm(this);
 
             CancelButton = cmdOk;
             AcceptButton = cmdOk;
 
             if (icon != null)
-                Icon = icon;
+                SetIcon(icon);
 
             if (logoImage != null)
-                pictureBoxLogo.Image = logoImage;
+                SetLogoImage(logoImage);
 
             if (title != null)
-                Text = title;
+                SetTitleText(title);
 
             if (showInTaskbar)
             {
@@ -92,6 +90,19 @@ namespace NTDLS.WinFormsHelpers.Forms
                 Invoke(new Action<Image>(SetLogoImage), image);
                 return;
             }
+
+            if (image.Size.Height < pictureBoxLogo.Height || image.Size.Width < pictureBoxLogo.Width)
+            {
+                pictureBoxLogo.Height = image.Size.Height;
+                pictureBoxLogo.Width = image.Size.Width;
+            }
+            else
+            {
+                _originalImage = image;
+            }
+
+            pictureBoxLogo.Top = ((listViewVersions.Height - listViewVersions.Top) / 2) - ((pictureBoxLogo.Height - listViewVersions.Top) / 2);
+            pictureBoxLogo.Left = (listViewVersions.Left / 2) - (pictureBoxLogo.Width / 2);
 
             pictureBoxLogo.Image = image;
         }

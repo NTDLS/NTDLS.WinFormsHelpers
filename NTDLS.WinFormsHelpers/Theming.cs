@@ -1,7 +1,9 @@
 namespace NTDLS.WinFormsHelpers
 {
     /// <summary>
-    /// Support for WinForms dark mode, which follows the Windows "app mode" setting (same approach as SQL Script Generator).
+    /// Support for WinForms dark mode, which follows the Windows "app mode" setting.
+    /// Requires net10.0-windows or later and the Windows App SDK.
+    /// Call Theming.InitializeApplication() before creating any forms to enable dark mode.
     /// </summary>
     public static class Theming
     {
@@ -16,7 +18,7 @@ namespace NTDLS.WinFormsHelpers
         /// <summary>
         /// Follows the Windows light/dark setting. Must be called before any form is created.
         /// </summary>
-        public static void Initialize() => Application.SetColorMode(SystemColorMode.System);
+        public static void InitializeApplication() => Application.SetColorMode(SystemColorMode.System);
 #pragma warning restore WFO5001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
         /// <summary>
@@ -52,7 +54,7 @@ namespace NTDLS.WinFormsHelpers
         /// <summary>
         /// Works around controls that WinForms dark mode does not fully restyle. Applies to the control, its children, and any added later.
         /// </summary>
-        public static void ApplyDarkMode(Control root)
+        public static void InitializeForm(Control root)
         {
             if (!IsDarkMode)
             {
@@ -73,7 +75,7 @@ namespace NTDLS.WinFormsHelpers
 
             foreach (Control child in root.Controls)
             {
-                ApplyDarkMode(child);
+                InitializeForm(child);
             }
 
             root.ControlAdded -= Root_ControlAdded;
@@ -84,7 +86,7 @@ namespace NTDLS.WinFormsHelpers
         {
             if (e.Control != null)
             {
-                ApplyDarkMode(e.Control);
+                InitializeForm(e.Control);
             }
         }
     }

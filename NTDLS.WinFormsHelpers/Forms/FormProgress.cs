@@ -37,7 +37,7 @@ namespace NTDLS.WinFormsHelpers.Forms
         public FormProgress()
         {
             InitializeComponent();
-            Theming.ApplyDarkMode(this);
+            Theming.InitializeForm(this);
 
             labelBody.Text = "";
             buttonCancel.Enabled = false;

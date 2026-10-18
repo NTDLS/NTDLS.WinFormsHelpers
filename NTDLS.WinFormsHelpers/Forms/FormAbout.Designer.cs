@@ -42,17 +42,17 @@
             // 
             pictureBoxLogo.BackgroundImageLayout = ImageLayout.Center;
             pictureBoxLogo.Image = (Image)resources.GetObject("pictureBoxLogo.Image");
-            pictureBoxLogo.Location = new Point(18, 32);
+            pictureBoxLogo.Location = new Point(13, 35);
             pictureBoxLogo.Margin = new Padding(4, 3, 4, 3);
             pictureBoxLogo.Name = "pictureBoxLogo";
-            pictureBoxLogo.Size = new Size(103, 108);
+            pictureBoxLogo.Size = new Size(100, 100);
             pictureBoxLogo.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBoxLogo.TabIndex = 0;
             pictureBoxLogo.TabStop = false;
             // 
             // cmdOk
             // 
-            cmdOk.Location = new Point(394, 167);
+            cmdOk.Location = new Point(365, 167);
             cmdOk.Margin = new Padding(4, 3, 4, 3);
             cmdOk.Name = "cmdOk";
             cmdOk.Size = new Size(88, 27);
@@ -66,7 +66,7 @@
             listViewVersions.Columns.AddRange(new ColumnHeader[] { columnHeaderApplication, columnHeaderVersion });
             listViewVersions.FullRowSelect = true;
             listViewVersions.HeaderStyle = ColumnHeaderStyle.Nonclickable;
-            listViewVersions.Location = new Point(150, 12);
+            listViewVersions.Location = new Point(121, 12);
             listViewVersions.Margin = new Padding(4, 3, 4, 3);
             listViewVersions.MultiSelect = false;
             listViewVersions.Name = "listViewVersions";
@@ -90,7 +90,7 @@
             // 
             linkLabel1.AutoSize = true;
             linkLabel1.Font = new Font("Microsoft Sans Serif", 11F);
-            linkLabel1.Location = new Point(150, 170);
+            linkLabel1.Location = new Point(121, 164);
             linkLabel1.Margin = new Padding(4, 0, 4, 0);
             linkLabel1.Name = "linkLabel1";
             linkLabel1.Size = new Size(164, 18);
@@ -103,7 +103,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(497, 202);
+            ClientSize = new Size(463, 200);
             Controls.Add(linkLabel1);
             Controls.Add(listViewVersions);
             Controls.Add(cmdOk);

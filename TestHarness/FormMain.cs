@@ -1,4 +1,6 @@
 ﻿using NTDLS.WinFormsHelpers;
+using NTDLS.WinFormsHelpers.Forms;
+using System.Resources;
 
 namespace TestHarness
 {
@@ -7,6 +9,7 @@ namespace TestHarness
         public FormMain()
         {
             InitializeComponent();
+            Theming.InitializeForm(this);
         }
 
         private void buttonProgress_Click(object sender, EventArgs e)
@@ -52,6 +55,12 @@ namespace TestHarness
                     progressForm.SetProgressValue(i);
                 }
             });
+        }
+
+        private void buttonAbout_Click(object sender, EventArgs e)
+        {
+            using var form = new FormAbout("NetTunnel", this.Icon, Resources.Logo128);
+            form.ShowDialog();
         }
     }
 }
