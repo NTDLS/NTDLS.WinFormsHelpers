@@ -87,6 +87,38 @@ tips.AddControls(new Control[] { btnOpen, btnSave, btnCancel },
                  "Performs the action after validating all inputs.", wrapLength: 40);
 ```
 
+### Dark mode
+
+WinForms (.NET 9 and later) can follow the Windows light/dark setting, but a few controls are left half done. `Theming` does the setup and the
+fixes in one place:
+
+```csharp
+using NTDLS.WinFormsHelpers;
+
+// Once, before any form is created (Program.cs):
+Theming.InitializeApplication();
+
+// In the constructor of every form, after InitializeComponent():
+Theming.InitializeForm(this);
+```
+
+`InitializeForm` covers the form, everything on it, and controls added to it later. In dark mode it fixes:
+
+* **Link labels**, which would be dark blue on a dark background.
+* **Tab pages**, which keep a light background.
+* **Combo boxes** on the first tab, which would stay white (WinForms only themes a combo box whose handle is created after the form).
+* **Data grids**: the header cells, which stay white, and **link columns**, whose links would be dark blue (also for columns added later).
+
+In light mode it does nothing. For the few things you paint yourself, `Theming` has colors that suit the current mode:
+
+```csharp
+row.BackColor = Theming.StatusErrorBack;      // also StatusWarningBack and StatusGoodBack
+row.ForeColor = Theming.StatusText;           // the text color for those backgrounds
+label.ForeColor = Theming.Muted;              // secondary text
+rowHighlight.BackColor = Theming.Highlight;
+bool dark = Theming.IsDarkMode;
+```
+
 ### ProgressForm for background work
 
 ```csharp

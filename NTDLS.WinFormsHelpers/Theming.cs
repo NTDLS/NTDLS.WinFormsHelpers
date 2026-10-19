@@ -52,7 +52,29 @@ namespace NTDLS.WinFormsHelpers
         public static Color Muted => IsDarkMode ? Color.FromArgb(0x9A, 0x9A, 0x9A) : Color.FromArgb(0x60, 0x60, 0x60);
 
         /// <summary>
-        /// Works around controls that WinForms dark mode does not fully restyle. Applies to the control, its children, and any added later.
+        /// Background for a row or cell that reports a problem (disconnected, failed...). Use <see cref="StatusText"/> for its text.
+        /// </summary>
+        public static Color StatusErrorBack => IsDarkMode ? Color.FromArgb(110, 40, 40) : Color.FromArgb(255, 200, 200);
+
+        /// <summary>
+        /// Background for a row or cell that reports something that needs attention (connecting, stopped...).
+        /// Use <see cref="StatusText"/> for its text.
+        /// </summary>
+        public static Color StatusWarningBack => IsDarkMode ? Color.FromArgb(125, 90, 0) : Color.FromArgb(255, 200, 0);
+
+        /// <summary>
+        /// Background for a row or cell that reports that all is well (connected, running...). Use <see cref="StatusText"/> for its text.
+        /// </summary>
+        public static Color StatusGoodBack => IsDarkMode ? Color.FromArgb(35, 95, 45) : Color.FromArgb(200, 255, 200);
+
+        /// <summary>
+        /// The text color for text on <see cref="StatusErrorBack"/>, <see cref="StatusWarningBack"/> and <see cref="StatusGoodBack"/>.
+        /// </summary>
+        public static Color StatusText => IsDarkMode ? Color.White : Color.Black;
+
+        /// <summary>
+        /// Works around controls that WinForms dark mode does not fully restyle (link labels, tab pages, combo boxes, the headers and link columns of
+        /// data grids). Applies to the control, its children, and any added later.
         /// </summary>
         public static void InitializeForm(Control root)
         {
@@ -65,6 +87,15 @@ namespace NTDLS.WinFormsHelpers
             {
                 tabPage.UseVisualStyleBackColor = false;
                 tabPage.BackColor = SystemColors.Control;
+            }
+            else if (root is Form form)
+            {
+                form.Shown -= Form_Shown;
+                form.Shown += Form_Shown;
+            }
+            else if (root is DataGridView grid)
+            {
+                InitializeGrid(grid);
             }
             else if (root is LinkLabel linkLabel)
             {
@@ -81,6 +112,89 @@ namespace NTDLS.WinFormsHelpers
             root.ControlAdded -= Root_ControlAdded;
             root.ControlAdded += Root_ControlAdded;
         }
+
+        /// <summary>
+        /// The color of the header cells of a grid in dark mode.
+        /// </summary>
+        private static readonly Color GridHeaderBackColor = Color.FromArgb(0x3A, 0x3A, 0x3A);
+
+        /// <summary>
+        /// Gives a DataGridView the colors it does not get from dark mode by itself: its header cells stay white, and the links in
+        /// its link columns keep the default dark blue, which cannot be read on a dark background. Columns that are added later are
+        /// handled as they are added.
+        /// </summary>
+        private static void InitializeGrid(DataGridView grid)
+        {
+            grid.EnableHeadersVisualStyles = false;
+            grid.ColumnHeadersDefaultCellStyle.BackColor = GridHeaderBackColor;
+            grid.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            grid.ColumnHeadersDefaultCellStyle.SelectionBackColor = GridHeaderBackColor;
+            grid.ColumnHeadersDefaultCellStyle.SelectionForeColor = Color.White;
+            grid.RowHeadersDefaultCellStyle.BackColor = GridHeaderBackColor;
+            grid.RowHeadersDefaultCellStyle.ForeColor = Color.White;
+            grid.RowHeadersDefaultCellStyle.SelectionBackColor = GridHeaderBackColor;
+            grid.GridColor = Color.FromArgb(0x55, 0x55, 0x55);
+
+            foreach (DataGridViewColumn column in grid.Columns)
+            {
+                InitializeGridColumn(column);
+            }
+
+            grid.ColumnAdded -= Grid_ColumnAdded;
+            grid.ColumnAdded += Grid_ColumnAdded;
+        }
+
+        private static void Grid_ColumnAdded(object? sender, DataGridViewColumnEventArgs e)
+            => InitializeGridColumn(e.Column);
+
+        private static void InitializeGridColumn(DataGridViewColumn column)
+        {
+            if (column is DataGridViewLinkColumn linkColumn)
+            {
+                linkColumn.LinkColor = LinkColor;
+                linkColumn.ActiveLinkColor = ActiveLinkColor;
+                linkColumn.VisitedLinkColor = VisitedLinkColor;
+            }
+        }
+
+
+        private static readonly System.Reflection.MethodInfo? _recreateHandle =
+            typeof(Control).GetMethod("RecreateHandle", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+
+        private static void Form_Shown(object? sender, EventArgs e)
+        {
+            if (sender is Form form)
+            {
+                RecreateComboBoxes(form);
+            }
+        }
+
+        /// <summary>
+        /// WinForms gives a combo box the dark theme when its handle is created, but not when that happens while the form itself is being
+        /// created, which is when the combo boxes on the page that is showing first get theirs: those stay white. Recreating their handles
+        /// once the form is shown gives them the dark theme. Combo boxes that get their handle later (on the other tab pages) are
+        /// fine already, so only the ones that have a handle at this point are touched.
+        /// </summary>
+        private static void RecreateComboBoxes(Control root)
+        {
+            if (root is ComboBox combo && combo.IsHandleCreated)
+            {
+                try
+                {
+                    _recreateHandle?.Invoke(combo, null);
+                }
+                catch
+                {
+                    //The combo box stays as it is.
+                }
+            }
+
+            foreach (Control child in root.Controls)
+            {
+                RecreateComboBoxes(child);
+            }
+        }
+
 
         private static void Root_ControlAdded(object? sender, ControlEventArgs e)
         {
