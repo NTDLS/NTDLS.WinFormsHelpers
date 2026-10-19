@@ -24,7 +24,7 @@
 		<PackageReleaseNotes>
 			Dark mode: Theming.InitializeForm now also restyles the headers and link columns of data grids and the combo boxes that stayed white, and Theming has status colors (StatusErrorBack, StatusWarningBack, StatusGoodBack, StatusText).
 		</PackageReleaseNotes>
-		<Version>1.6.1</Version>
+		<Version>1.6.3</Version>
 		<EnableNETAnalyzers>False</EnableNETAnalyzers>
 		<Description>Helpers for working with WinForms. Getting and setting values, simplifications for invoke, theming, etc.</Description>
 	</PropertyGroup>

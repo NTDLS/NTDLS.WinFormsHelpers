@@ -20,6 +20,7 @@ namespace NTDLS.WinFormsHelpers.Forms
         private double _rotationPhase = 0;
         private float _rotationAngle = 0;
         private System.Windows.Forms.Timer? _rotationTimer;
+        private readonly string _path;
 
         /// <summary>
         /// Initializes a new FormAbout instance with optional title, icon, and logo, and configures dialog buttons,
@@ -33,13 +34,23 @@ namespace NTDLS.WinFormsHelpers.Forms
         /// <param name="logoImage">Logo image to display in the picture box; if null the default image is used. Size should be square and preferably at least 100x100 pixels.</param>
         /// <param name="showInTaskbar">True to show the form in the taskbar, center on the screen, and make it topmost; false to center it to the
         /// parent and not show in the taskbar.</param>
-        public FormAbout(string? title = null, Icon? icon = null, Image? logoImage = null, bool showInTaskbar = true)
+        /// <param name="path">The path to search for NetworkDLS assemblies.</param>
+        public FormAbout(string? title = null, Icon? icon = null, Image? logoImage = null, bool showInTaskbar = true, string? path = null)
         {
             InitializeComponent();
             Theming.InitializeForm(this);
 
             CancelButton = cmdOk;
             AcceptButton = cmdOk;
+
+            if (_path == null)
+            {
+                _path = Path.GetDirectoryName(assembly.Location) ?? string.Empty;
+            }
+            else
+            {
+                _path = path ?? string.Empty;
+            }
 
             if (icon != null)
                 SetIcon(icon);
@@ -179,21 +190,13 @@ namespace NTDLS.WinFormsHelpers.Forms
 
             FormClosed += (s, _) => { _rotationTimer.Stop(); _rotationTimer.Dispose(); };
 
-            if (assembly == null || assembly.Location == null)
+            if (assembly == null || assembly.Location == null || string.IsNullOrEmpty(_path))
             {
                 return;
             }
 
-            string? path = Path.GetDirectoryName(assembly.Location);
-            if (path == null)
-            {
-                return;
-            }
-
-            path += @"\..\".Replace('/', '\\').Replace(@"\\", @"\");
-
-            var files = Directory.EnumerateFiles(path, "*.dll", SearchOption.AllDirectories).ToList();
-            files.AddRange(Directory.EnumerateFiles(path, "*.exe", SearchOption.AllDirectories));
+            var files = Directory.EnumerateFiles(_path, "*.dll", SearchOption.AllDirectories).ToList();
+            files.AddRange(Directory.EnumerateFiles(_path, "*.exe", SearchOption.AllDirectories));
 
             HashSet<string> seenAssemblies = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
