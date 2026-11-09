@@ -15,12 +15,14 @@ namespace NTDLS.WinFormsHelpers.Forms
     public partial class FormAbout
         : Form
     {
-        readonly Assembly assembly = Assembly.GetExecutingAssembly();
+        private readonly Func<AssemblyName, FileVersionInfo, bool>? _addAssemblyCallback;
+        private readonly Assembly assembly = Assembly.GetExecutingAssembly();
         private Image? _originalImage;
         private double _rotationPhase = 0;
         private float _rotationAngle = 0;
         private System.Windows.Forms.Timer? _rotationTimer;
         private readonly string _path;
+        private string _linkURL = "http://www.NetworkDLS.com";
 
         /// <summary>
         /// Initializes a new FormAbout instance with optional title, icon, and logo, and configures dialog buttons,
@@ -35,13 +37,15 @@ namespace NTDLS.WinFormsHelpers.Forms
         /// <param name="showInTaskbar">True to show the form in the taskbar, center on the screen, and make it topmost; false to center it to the
         /// parent and not show in the taskbar.</param>
         /// <param name="path">The path to search for NetworkDLS assemblies.</param>
-        public FormAbout(string? title = null, Icon? icon = null, Image? logoImage = null, bool showInTaskbar = true, string? path = null)
+        /// <param name="addAssemblyCallback">A callback function to add assemblies.</param>
+        public FormAbout(string? title = null, Icon? icon = null, Image? logoImage = null, bool showInTaskbar = true, string? path = null, Func<AssemblyName, FileVersionInfo, bool>? addAssemblyCallback = null)
         {
             InitializeComponent();
             Theming.InitializeForm(this);
 
             CancelButton = cmdOk;
             AcceptButton = cmdOk;
+            _addAssemblyCallback = addAssemblyCallback;
 
             if (_path == null)
             {
@@ -133,6 +137,17 @@ namespace NTDLS.WinFormsHelpers.Forms
             Icon = icon;
         }
 
+        /// <summary>
+        /// Sets the link label text and the URL to open when clicked. The URL is opened in the default web browser.
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="url"></param>
+        public void SetLinkURL(string text, string url)
+        {
+            linkLabel.Text = text;
+            _linkURL = url;
+        }
+
         private void PictureBoxLogo_Paint(object? sender, PaintEventArgs e)
         {
             if (_originalImage == null) return;
@@ -215,16 +230,34 @@ namespace NTDLS.WinFormsHelpers.Forms
             listViewVersions.AutoResizeColumn(1, ColumnHeaderAutoResizeStyle.HeaderSize);
         }
 
+
         private void AddAssembly(string appPath)
         {
             try
             {
+
+
                 var componentAssembly = AssemblyName.GetAssemblyName(appPath);
                 var versionInfo = FileVersionInfo.GetVersionInfo(appPath);
                 var companyName = versionInfo.CompanyName;
 
-                if (componentAssembly.Version != null && companyName?.ToLower()?.Contains("networkdls") == true)
+                if (componentAssembly.Version != null)
                 {
+                    if (_addAssemblyCallback != null)
+                    {
+                        if (_addAssemblyCallback(componentAssembly, versionInfo) != true)
+                        {
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        if (companyName?.ToLower()?.Contains("networkdls") != true)
+                        {
+                            return;
+                        }
+                    }
+
                     var verStr = string.Join('.', componentAssembly.Version.ToString().Split('.').Take(3));
                     listViewVersions.Items.Add(new ListViewItem([componentAssembly.Name ?? "", verStr]));
                 }
@@ -240,7 +273,7 @@ namespace NTDLS.WinFormsHelpers.Forms
             {
                 Process.Start(new ProcessStartInfo
                 {
-                    FileName = "http://www.NetworkDLS.com",
+                    FileName = _linkURL,
                     UseShellExecute = true
                 });
             }

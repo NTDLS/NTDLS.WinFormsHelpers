@@ -34,7 +34,7 @@
             listViewVersions = new ListView();
             columnHeaderApplication = new ColumnHeader();
             columnHeaderVersion = new ColumnHeader();
-            linkLabel1 = new LinkLabel();
+            linkLabel = new LinkLabel();
             ((System.ComponentModel.ISupportInitialize)pictureBoxLogo).BeginInit();
             SuspendLayout();
             // 
@@ -86,25 +86,25 @@
             columnHeaderVersion.Text = "Version";
             columnHeaderVersion.Width = 75;
             // 
-            // linkLabel1
+            // linkLabel
             // 
-            linkLabel1.AutoSize = true;
-            linkLabel1.Font = new Font("Microsoft Sans Serif", 11F);
-            linkLabel1.Location = new Point(121, 164);
-            linkLabel1.Margin = new Padding(4, 0, 4, 0);
-            linkLabel1.Name = "linkLabel1";
-            linkLabel1.Size = new Size(164, 18);
-            linkLabel1.TabIndex = 10;
-            linkLabel1.TabStop = true;
-            linkLabel1.Text = "www.NetworkDLS.com";
-            linkLabel1.LinkClicked += LinkWebsiteNtdls_LinkClicked;
+            linkLabel.AutoSize = true;
+            linkLabel.Font = new Font("Microsoft Sans Serif", 11F);
+            linkLabel.Location = new Point(121, 164);
+            linkLabel.Margin = new Padding(4, 0, 4, 0);
+            linkLabel.Name = "linkLabel";
+            linkLabel.Size = new Size(164, 18);
+            linkLabel.TabIndex = 10;
+            linkLabel.TabStop = true;
+            linkLabel.Text = "www.NetworkDLS.com";
+            linkLabel.LinkClicked += LinkWebsiteNtdls_LinkClicked;
             // 
             // FormAbout
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(463, 200);
-            Controls.Add(linkLabel1);
+            Controls.Add(linkLabel);
             Controls.Add(listViewVersions);
             Controls.Add(cmdOk);
             Controls.Add(pictureBoxLogo);
@@ -130,6 +130,6 @@
         private ListView listViewVersions;
         private ColumnHeader columnHeaderApplication;
         private ColumnHeader columnHeaderVersion;
-        private LinkLabel linkLabel1;
+        private LinkLabel linkLabel;
     }
 }
