@@ -97,6 +97,8 @@ using NTDLS.WinFormsHelpers;
 
 // Once, before any form is created (Program.cs):
 Theming.InitializeApplication();
+// ...or, when the user can choose:
+Theming.InitializeApplication(ThemeColorMode.Dark);   // System, Light or Dark
 
 // In the constructor of every form, after InitializeComponent():
 Theming.InitializeForm(this);
@@ -115,6 +117,7 @@ In light mode it does nothing. For the few things you paint yourself, `Theming` 
 row.BackColor = Theming.StatusErrorBack;      // also StatusWarningBack and StatusGoodBack
 row.ForeColor = Theming.StatusText;           // the text color for those backgrounds
 label.ForeColor = Theming.Muted;              // secondary text
+label.ForeColor = Theming.ErrorText;          // text on the normal background: also GoodText, WarningText and InfoText
 rowHighlight.BackColor = Theming.Highlight;
 bool dark = Theming.IsDarkMode;
 ```

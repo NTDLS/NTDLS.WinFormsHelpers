@@ -1,6 +1,19 @@
 namespace NTDLS.WinFormsHelpers
 {
     /// <summary>
+    /// The light/dark choice for <see cref="Theming.InitializeApplication(ThemeColorMode)"/>.
+    /// </summary>
+    public enum ThemeColorMode
+    {
+        /// <summary>Follow the Windows "app mode" setting.</summary>
+        System,
+        /// <summary>Always light.</summary>
+        Light,
+        /// <summary>Always dark.</summary>
+        Dark,
+    }
+
+    /// <summary>
     /// Support for WinForms dark mode, which follows the Windows "app mode" setting.
     /// Requires net10.0-windows or later and the Windows App SDK.
     /// Call Theming.InitializeApplication() before creating any forms to enable dark mode.
@@ -18,7 +31,19 @@ namespace NTDLS.WinFormsHelpers
         /// <summary>
         /// Follows the Windows light/dark setting. Must be called before any form is created.
         /// </summary>
-        public static void InitializeApplication() => Application.SetColorMode(SystemColorMode.System);
+        public static void InitializeApplication() => InitializeApplication(ThemeColorMode.System);
+
+        /// <summary>
+        /// Uses the given light/dark mode (for an application that lets the user choose). Must be called after
+        /// ApplicationConfiguration.Initialize() and before any form is created.
+        /// </summary>
+        public static void InitializeApplication(ThemeColorMode mode) =>
+            Application.SetColorMode(mode switch
+            {
+                ThemeColorMode.Light => SystemColorMode.Classic,
+                ThemeColorMode.Dark => SystemColorMode.Dark,
+                _ => SystemColorMode.System,
+            });
 #pragma warning restore WFO5001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
         /// <summary>
@@ -71,6 +96,26 @@ namespace NTDLS.WinFormsHelpers
         /// The text color for text on <see cref="StatusErrorBack"/>, <see cref="StatusWarningBack"/> and <see cref="StatusGoodBack"/>.
         /// </summary>
         public static Color StatusText => IsDarkMode ? Color.White : Color.Black;
+
+        /// <summary>
+        /// Text (on the normal background) that reports a problem or something dangerous: failed, will be dropped, data loss...
+        /// </summary>
+        public static Color ErrorText => IsDarkMode ? Color.FromArgb(255, 128, 128) : Color.Firebrick;
+
+        /// <summary>
+        /// Text (on the normal background) that reports that all is well, or something added: connected, succeeded, new...
+        /// </summary>
+        public static Color GoodText => IsDarkMode ? Color.LightGreen : Color.DarkGreen;
+
+        /// <summary>
+        /// Text (on the normal background) that needs attention, or something changed: modified, pending...
+        /// </summary>
+        public static Color WarningText => IsDarkMode ? Color.Gold : Color.DarkGoldenrod;
+
+        /// <summary>
+        /// Text (on the normal background) that is informational, or a third kind of change next to good and warning: renamed, moved...
+        /// </summary>
+        public static Color InfoText => IsDarkMode ? Color.LightSkyBlue : Color.RoyalBlue;
 
         /// <summary>
         /// Works around controls that WinForms dark mode does not fully restyle (link labels, tab pages, combo boxes, the headers and link columns of
